@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: skylark-bi-agent
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: MONDAY_TOKEN
+        sync: false
+      - key: WORKSPACE_ID
+        value: "3364949"
+      - key: DEALS_BOARD_ID
+        value: "5030846728"
+      - key: WORK_ORDERS_BOARD_ID
+        value: "5030846665"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CACHE_TTL_SECONDS
+        value: "120"
