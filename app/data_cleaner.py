@@ -490,3 +490,6 @@ class DataResilienceEngine:
                 )
 
         return caveats
+
+DataCleaner = DataResilienceEngine
+data_cleaner = DataResilienceEngine()

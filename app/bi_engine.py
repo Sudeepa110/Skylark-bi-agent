@@ -340,3 +340,5 @@ class BusinessIntelligenceEngine:
             "pipeline_details": pipeline,
             "ops_details": ops
         }
+
+BIEngine = BusinessIntelligenceEngine
