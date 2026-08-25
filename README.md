@@ -140,11 +140,34 @@ CACHE_TTL_SECONDS=120
 PORT=8000
 ```
 
-### 3. Launch the Application
+### 3. Launch the Application Locally
 ```bash
 python -m uvicorn app.main:app --port 8000 --reload
 ```
 Open your browser and navigate to: **`http://localhost:8000`**
+
+---
+
+## ☁️ Cloud Deployment (Render & Docker)
+
+This repository includes native **Infrastructure-as-Code** for 1-click cloud deployment:
+
+### Deploying to Render via Blueprint (`render.yaml`)
+1. Push this repository to your GitHub account.
+2. In the [Render Dashboard](https://dashboard.render.com/), click **New +** → **Blueprint**.
+3. Connect your repository. Render automatically reads [`render.yaml`](file:///d:/skylark-monday-bi-agent/render.yaml) and configures:
+   - **Environment**: Python 3.11.9 on Free Tier Web Service
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+4. Enter your secret environment variables when prompted (`MONDAY_TOKEN` and `GEMINI_API_KEY`).
+5. Click **Apply** to deploy.
+
+### Deploying via Docker
+The included [`Dockerfile`](file:///d:/skylark-monday-bi-agent/Dockerfile) is container-ready:
+```bash
+docker build -t skylark-bi-agent .
+docker run -p 8000:8000 --env-file .env skylark-bi-agent
+```
 
 ---
 
@@ -188,6 +211,7 @@ skylark-monday-bi-agent/
 │   ├── seed_fast.py             # Script to populate Monday.com boards
 │   └── check_progress.py        # Verification utility for live board records
 ├── Dockerfile                   # Cloud container build file
+├── render.yaml                  # 1-Click Render Blueprint infrastructure-as-code
 ├── requirements.txt             # Python dependencies
 ├── README.md                    # Project documentation
 └── DECISION_LOG.md              # Architectural decision log
