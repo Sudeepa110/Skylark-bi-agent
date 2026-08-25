@@ -19,8 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatForm = document.getElementById("chat-form");
   const chatInput = document.getElementById("chat-input");
   const micBtn = document.getElementById("mic-btn");
-  const voiceModeBtn = document.getElementById("voice-mode-btn");
-  const voiceBtnText = document.getElementById("voice-btn-text");
   const syncBadge = document.getElementById("connection-status-badge");
   const syncText = document.getElementById("sync-status-text");
   const refreshBtn = document.getElementById("refresh-data-btn");
@@ -50,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentBoard = "deals";
   let loadedBoardData = [];
-  let voiceModeActive = true;
+  let voiceModeActive = false; // On-demand audio playback via Listen buttons
   let currentUtterance = null;
   let activeSpeakBtn = null;
   let lastSyncTimestamp = Date.now();
@@ -64,19 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // --------------------------------------------------------------------------
   // 1. LIVE TEXT-TO-SPEECH (TTS) & VOICE CONTROLLER
   // --------------------------------------------------------------------------
-
-  // Toggle Auto-Voice Mode
-  voiceModeBtn.addEventListener("click", () => {
-    voiceModeActive = !voiceModeActive;
-    if (voiceModeActive) {
-      voiceModeBtn.classList.add("active");
-      voiceBtnText.innerText = "Voice: ON";
-    } else {
-      voiceModeBtn.classList.remove("active");
-      voiceBtnText.innerText = "Voice: OFF";
-      stopSpeaking();
-    }
-  });
 
   function cleanMarkdownForSpeech(mdText) {
     if (!mdText) return "";
