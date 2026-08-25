@@ -11,12 +11,11 @@ import json
 import urllib.request
 import urllib.error
 import pandas as pd
-from datetime import datetime
+from dotenv import load_dotenv
 
-MONDAY_TOKEN = os.environ.get(
-    "MONDAY_TOKEN",
-    "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjY5NjU3Mzc3OCwiYWFpIjoxMSwidWlkIjoxMTQzMTQwMjQsImlhZCI6IjIwMjYtMDgtMjVUMDQ6NDM6MjIuNzA1WiIsInBlciI6Im1lOndyaXRlIiwiYWN0aWQiOjM2NjAyNDM4LCJyZ24iOiJhcHNlMiJ9.kCU2-yUe1z-zGZEACelKjhGL51gZXrMGCzIbOeFF5Kc"
-)
+load_dotenv()
+
+MONDAY_TOKEN = os.environ.get("MONDAY_TOKEN", "")
 DEAL_FILE = r"C:\Users\sudee\Downloads\Deal funnel Data.xlsx"
 WO_FILE = r"C:\Users\sudee\Downloads\Work_Order_Tracker Data.xlsx"
 
