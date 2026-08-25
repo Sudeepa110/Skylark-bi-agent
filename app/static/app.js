@@ -1,12 +1,11 @@
 /**
- * Skylark BI Platform - Interactive Application Controller
+ * Skylark AI - Clean, User-Friendly Application Controller
  * Features:
- * - 3-Tab Navigation (BI Assistant | Executive Reports | Board Data)
- * - Comprehensive Error Handling (Auth 401, Board 404, Rate Limit 429, Network 503)
- * - Live Text-to-Speech (TTS) Voice Synthesis & Read Aloud
- * - Speech-to-Text (STT) Voice Dictation via Microphone
- * - Real-Time Monday.com 120s TTL Cache Freshness Polling
- * - Interactive Board Data Explorer with Live Search
+ * - 3-Tab Clean Navigation (Chat Assistant | Executive Reports | Board Explorer)
+ * - Modern conversational chat feed with assistant avatars
+ * - On-demand TTS audio playback via Listen buttons
+ * - Speech-to-Text (STT) voice input via Microphone
+ * - Live Board Explorer with instant client/sector search
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const subBilled = document.getElementById("sub-billed");
   const valRisks = document.getElementById("val-risks");
   const subRisks = document.getElementById("sub-risks");
-  const resilienceAuditText = document.getElementById("resilience-audit-text");
 
   // Executive Reports Elements
   const reportBody = document.getElementById("executive-report-body");
@@ -48,19 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentBoard = "deals";
   let loadedBoardData = [];
-  let voiceModeActive = false; // On-demand audio playback via Listen buttons
   let currentUtterance = null;
   let activeSpeakBtn = null;
-  let lastSyncTimestamp = Date.now();
   let isConnected = true;
-  const CACHE_TTL = 120; // seconds
 
   // Initialize System
   checkHealthAndLoadKPIs();
-  startTTLCounter();
 
   // --------------------------------------------------------------------------
-  // 1. LIVE TEXT-TO-SPEECH (TTS) & VOICE CONTROLLER
+  // 1. LIVE TEXT-TO-SPEECH (TTS) AUDIO SYNTHESIS
   // --------------------------------------------------------------------------
 
   function cleanMarkdownForSpeech(mdText) {
@@ -78,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/L\b/g, " Lakh")
       .replace(/WOs\b/g, " Work Orders")
       .replace(/AR\b/g, " Accounts Receivable")
-      .replace(/KAM\b/g, " Key Account Manager")
       .replace(/\n+/g, ". ")
       .trim();
   }
@@ -111,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnElement) {
       activeSpeakBtn = btnElement;
-      btnElement.classList.add("speaking");
       btnElement.innerHTML = '<i class="fa-solid fa-stop"></i> Stop';
     }
 
@@ -132,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.speechSynthesis.cancel();
     }
     if (activeSpeakBtn) {
-      activeSpeakBtn.classList.remove("speaking");
       if (activeSpeakBtn.id === "tts-report-btn") {
         activeSpeakBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Listen Aloud';
       } else {
@@ -156,38 +147,33 @@ document.addEventListener("DOMContentLoaded", () => {
     recognition.lang = 'en-US';
 
     recognition.onstart = () => {
-      micBtn.classList.add("listening");
-      chatInput.placeholder = "Listening... Speak your executive question now...";
+      micBtn.style.color = "var(--accent-rose)";
+      chatInput.placeholder = "Listening... Speak your question now...";
     };
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       chatInput.value = transcript;
-      micBtn.classList.remove("listening");
-      chatInput.placeholder = "Ask any executive query...";
+      micBtn.style.color = "";
+      chatInput.placeholder = "Ask any question or click mic to speak...";
       chatForm.dispatchEvent(new Event("submit"));
     };
 
-    recognition.onerror = (event) => {
-      console.warn("Speech recognition error:", event.error);
-      micBtn.classList.remove("listening");
-      chatInput.placeholder = "Ask any executive query...";
+    recognition.onerror = () => {
+      micBtn.style.color = "";
+      chatInput.placeholder = "Ask any question or click mic to speak...";
     };
 
     recognition.onend = () => {
-      micBtn.classList.remove("listening");
-      chatInput.placeholder = "Ask any executive query...";
+      micBtn.style.color = "";
+      chatInput.placeholder = "Ask any question or click mic to speak...";
     };
 
     micBtn.addEventListener("click", () => {
-      if (micBtn.classList.contains("listening")) {
-        recognition.stop();
-      } else {
-        try {
-          recognition.start();
-        } catch (err) {
-          console.warn("Mic start error:", err);
-        }
+      try {
+        recognition.start();
+      } catch (err) {
+        console.warn("Mic error:", err);
       }
     });
   } else {
@@ -220,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --------------------------------------------------------------------------
-  // 4. CHAT & BI ASSISTANT (TAB 1) WITH ERROR HANDLING
+  // 4. CHAT ASSISTANT (TAB 1)
   // --------------------------------------------------------------------------
   chatForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -259,41 +245,25 @@ document.addEventListener("DOMContentLoaded", () => {
       removeTypingIndicator(typingId);
 
       if (!response.ok) {
-        let errTitle = "Error Processing Query";
-        let errMsg = "An error occurred while contacting the analytics server.";
-        let resolution = "Please check your network and board connection.";
-
+        let errMsg = "Unable to process query. Please try again.";
         try {
           const errData = await response.json();
           if (errData.message) errMsg = errData.message;
           else if (errData.detail) errMsg = errData.detail;
-          if (errData.resolution) resolution = errData.resolution;
         } catch (_) {}
-
-        appendErrorCard(errTitle, errMsg, resolution, query);
+        appendErrorCard("Notice", errMsg, query);
         return;
       }
 
       const data = await response.json();
-      if (data.type === "error") {
-        appendErrorCard("Monday.com / Analytics Notice", data.content, "Ensure MONDAY_TOKEN is configured in .env", query);
-      } else {
-        appendAgentResponse(data);
-      }
+      appendAgentResponse(data);
       scrollToBottom();
-
-      if (voiceModeActive && data.content) {
-        const lastCard = chatMessagesContainer.lastElementChild;
-        const listenBtn = lastCard ? lastCard.querySelector(".listen-btn") : null;
-        speakText(data.content, listenBtn);
-      }
     } catch (err) {
       removeTypingIndicator(typingId);
-      console.error("Network / Query error:", err);
+      console.error("Query error:", err);
       appendErrorCard(
-        "Network Connection Issue",
-        "Could not connect to the local server or Monday.com API.",
-        "Check your internet connection and verify the server is running.",
+        "Network Notice",
+        "Could not connect to the server. Please check connection.",
         query
       );
       scrollToBottom();
@@ -332,12 +302,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const card = document.createElement("div");
     card.className = "agent-response-card";
 
-    // Header with Listen (TTS) button
+    // Clean Header
     const header = document.createElement("div");
     header.className = "agent-card-header";
     
-    const titleDiv = document.createElement("div");
-    titleDiv.innerHTML = '<i class="fa-solid fa-bolt-lightning"></i> Skylark Executive BI';
+    const identityDiv = document.createElement("div");
+    identityDiv.className = "agent-identity";
+    identityDiv.innerHTML = `
+      <div class="agent-avatar"><i class="fa-solid fa-bolt"></i></div>
+      <span class="agent-name">Skylark Assistant</span>
+    `;
     
     const actionsDiv = document.createElement("div");
     actionsDiv.className = "agent-header-actions";
@@ -349,14 +323,9 @@ document.addEventListener("DOMContentLoaded", () => {
       speakText(data.content, listenBtn);
     });
 
-    const tagSpan = document.createElement("span");
-    tagSpan.className = "agent-tag";
-    tagSpan.innerText = "Live Monday Data";
-
     actionsDiv.appendChild(listenBtn);
-    actionsDiv.appendChild(tagSpan);
 
-    header.appendChild(titleDiv);
+    header.appendChild(identityDiv);
     header.appendChild(actionsDiv);
     card.appendChild(header);
 
@@ -392,7 +361,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollToBottom();
   }
 
-  function appendErrorCard(title, message, resolution, retryQuery = null) {
+  function appendErrorCard(title, message, retryQuery = null) {
     const wrapper = document.createElement("div");
     wrapper.className = "message-bubble-wrapper agent";
 
@@ -408,10 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const body = document.createElement("div");
     body.className = "agent-markdown";
-    body.innerHTML = `
-      <p style="color:#fca5a5; margin-bottom: 0.5rem;">${escapeHtml(message)}</p>
-      ${resolution ? `<p style="font-size: 0.8rem; color: var(--text-muted);"><strong>Resolution:</strong> ${escapeHtml(resolution)}</p>` : ""}
-    `;
+    body.innerHTML = `<p style="color:#fca5a5; margin-bottom: 0.5rem;">${escapeHtml(message)}</p>`;
     card.appendChild(body);
 
     if (retryQuery) {
@@ -419,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
       retryWrap.style.marginTop = "0.75rem";
       const retryBtn = document.createElement("button");
       retryBtn.className = "suggested-pill";
-      retryBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Retry Query';
+      retryBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Retry';
       retryBtn.addEventListener("click", async () => {
         wrapper.remove();
         appendMessage("user", retryQuery);
@@ -464,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
-  // 5. EXECUTIVE REPORTS (TAB 2) WITH ERROR HANDLING
+  // 5. EXECUTIVE REPORTS (TAB 2)
   // --------------------------------------------------------------------------
   generateReportBtn.addEventListener("click", () => {
     loadExecutiveReport(true);
@@ -476,7 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function loadExecutiveReport(force = false) {
-    reportBody.innerHTML = '<div class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Generating live leadership briefing...</div>';
+    reportBody.innerHTML = '<div class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Generating leadership briefing...</div>';
     try {
       const res = await fetch(`/api/leadership-update?force_refresh=${force}`);
       const data = await res.json();
@@ -484,30 +450,17 @@ document.addEventListener("DOMContentLoaded", () => {
         reportBody.innerHTML = marked.parse(data.report_markdown);
         reportBody.dataset.loaded = "true";
       } else {
-        const errMsg = data.message || data.detail || "Unable to generate executive report.";
-        reportBody.innerHTML = `
-          <div class="loading-state" style="color: var(--accent-rose);">
-            <i class="fa-solid fa-circle-exclamation" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
-            <p><strong>Failed to generate report:</strong> ${escapeHtml(errMsg)}</p>
-            <button class="action-btn primary" style="margin-top: 1rem;" onclick="location.reload()">
-              <i class="fa-solid fa-rotate"></i> Retry
-            </button>
-          </div>
-        `;
+        const errMsg = data.message || data.detail || "Unable to generate report.";
+        reportBody.innerHTML = `<div class="loading-state" style="color: var(--accent-rose);"><p>${escapeHtml(errMsg)}</p></div>`;
       }
     } catch (err) {
       console.error("Report error:", err);
-      reportBody.innerHTML = `
-        <div class="loading-state" style="color: var(--accent-rose);">
-          <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
-          <p>Network Error loading executive report.</p>
-        </div>
-      `;
+      reportBody.innerHTML = '<div class="loading-state" style="color: var(--accent-rose);"><p>Error loading report.</p></div>';
     }
   }
 
   // --------------------------------------------------------------------------
-  // 6. BOARD DATA EXPLORER (TAB 3) WITH ERROR HANDLING
+  // 6. BOARD EXPLORER (TAB 3)
   // --------------------------------------------------------------------------
   btnShowDeals.addEventListener("click", () => {
     btnShowDeals.classList.add("active");
@@ -539,16 +492,11 @@ document.addEventListener("DOMContentLoaded", () => {
         boardTableContainer.dataset.loaded = "true";
       } else {
         const errMsg = data.message || data.detail || "No records found.";
-        boardTableContainer.innerHTML = `
-          <div class="loading-state" style="color: var(--accent-rose);">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <p>${escapeHtml(errMsg)}</p>
-          </div>
-        `;
+        boardTableContainer.innerHTML = `<div class="loading-state">${escapeHtml(errMsg)}</div>`;
       }
     } catch (err) {
       console.error("Board items error:", err);
-      boardTableContainer.innerHTML = '<div class="loading-state" style="color: var(--accent-rose);"><i class="fa-solid fa-triangle-exclamation"></i> Error loading board records.</div>';
+      boardTableContainer.innerHTML = '<div class="loading-state">Error loading board records.</div>';
     }
   }
 
@@ -597,17 +545,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
-  // 7. GLOBAL HEALTH & LIVE CACHE TTL POLLING
+  // 7. GLOBAL HEALTH & KPI REFRESH
   // --------------------------------------------------------------------------
-  function startTTLCounter() {
-    setInterval(() => {
-      if (!isConnected) return;
-      const elapsed = Math.floor((Date.now() - lastSyncTimestamp) / 1000);
-      const remaining = Math.max(0, CACHE_TTL - (elapsed % CACHE_TTL));
-      syncText.innerText = `Monday.com Live (TTL: ${remaining}s)`;
-    }, 1000);
-  }
-
   async function checkHealthAndLoadKPIs() {
     try {
       const healthRes = await fetch("/api/health");
@@ -615,14 +554,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (healthRes.ok && healthData.status === "healthy") {
         isConnected = true;
-        syncBadge.style.borderColor = "rgba(0, 210, 255, 0.25)";
-        syncBadge.style.color = "var(--accent-cyan)";
-        lastSyncTimestamp = Date.now();
+        syncText.innerText = "Connected";
+        syncBadge.className = "status-pill connected";
       } else {
         isConnected = false;
-        syncText.innerText = "Monday.com: Disconnected";
-        syncBadge.style.borderColor = "rgba(239, 68, 68, 0.4)";
-        syncBadge.style.color = "var(--accent-rose)";
+        syncText.innerText = "Offline";
+        syncBadge.className = "status-pill offline";
       }
 
       const boardsRes = await fetch("/api/boards");
@@ -631,30 +568,26 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (bData.deals) {
           valPipeline.innerText = bData.deals.total_pipeline_val || "₹340.29 Cr";
-          subPipeline.innerText = `${bData.deals.total_records} active deals across sectors`;
+          subPipeline.innerText = `${bData.deals.total_records} active opportunities`;
         }
         if (bData.work_orders) {
           valPos.innerText = bData.work_orders.total_po_val || "₹21.16 Cr";
-          subPos.innerText = `${bData.work_orders.total_records} active executed projects`;
+          subPos.innerText = `${bData.work_orders.total_records} committed projects`;
 
           valBilled.innerText = bData.work_orders.billed_rev || "₹10.74 Cr";
           const realizationRate = bData.work_orders.data_quality.total_po_value_excl_gst > 0 
             ? Math.round((bData.work_orders.data_quality.total_billed_excl_gst / bData.work_orders.data_quality.total_po_value_excl_gst) * 100) 
             : 51;
-          subBilled.innerText = `${realizationRate}% billing execution rate`;
+          subBilled.innerText = `${realizationRate}% realization rate`;
 
-          valRisks.innerText = `${bData.work_orders.data_quality.completed_unbilled_count || 25} Unbilled WOs`;
-          subRisks.innerText = `₹${formatCr(bData.work_orders.data_quality.total_ar)} Outstanding AR`;
-
-          resilienceAuditText.innerText = `Data Resilience: ${bData.deals.data_quality.missing_value_count || 210} deals missing value fields imputed to ₹0 for safe aggregations. ${bData.work_orders.data_quality.completed_unbilled_count || 25} work orders verified with unbilled status backlog.`;
+          valRisks.innerText = `₹${formatCr(bData.work_orders.data_quality.total_ar)} AR`;
+          subRisks.innerText = `${bData.work_orders.data_quality.completed_unbilled_count || 25} unbilled work orders`;
         }
       }
     } catch (err) {
       console.error("Initialization error:", err);
       isConnected = false;
-      syncText.innerText = "Backend Offline";
-      syncBadge.style.borderColor = "rgba(239, 68, 68, 0.4)";
-      syncBadge.style.color = "var(--accent-rose)";
+      syncText.innerText = "Offline";
     }
   }
 
@@ -668,19 +601,13 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshBtn.disabled = true;
     refreshBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
     try {
-      const refRes = await fetch("/api/refresh", { method: "POST" });
-      if (refRes.ok) {
-        lastSyncTimestamp = Date.now();
-        await checkHealthAndLoadKPIs();
-        if (document.getElementById("tab-reports").classList.contains("active")) {
-          loadExecutiveReport(true);
-        }
-        if (document.getElementById("tab-board-data").classList.contains("active")) {
-          loadBoardTable(currentBoard);
-        }
-      } else {
-        const errData = await refRes.json();
-        alert(`Refresh error: ${errData.message || errData.detail || "Unable to sync with Monday.com"}`);
+      await fetch("/api/refresh", { method: "POST" });
+      await checkHealthAndLoadKPIs();
+      if (document.getElementById("tab-reports").classList.contains("active")) {
+        loadExecutiveReport(true);
+      }
+      if (document.getElementById("tab-board-data").classList.contains("active")) {
+        loadBoardTable(currentBoard);
       }
     } catch (err) {
       console.error("Refresh error:", err);

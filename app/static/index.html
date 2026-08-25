@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Skylark BI | Monday.com Business Intelligence Platform</title>
-  <meta name="description" content="AI-powered executive business intelligence platform querying live Monday.com Deals and Work Orders boards with live TTS voice interaction.">
+  <title>Skylark | AI Business Assistant</title>
+  <meta name="description" content="Clean, modern conversational AI business assistant querying live pipeline and operations data.">
   
-  <!-- Modern Google Fonts: Inter & Plus Jakarta Sans -->
+  <!-- Modern Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- FontAwesome Icons & Marked JS for Markdown -->
+  <!-- FontAwesome Icons & Marked JS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   
@@ -22,40 +22,40 @@
     
     <!-- Top Header Navigation -->
     <header class="top-nav">
-      <!-- Left: Logo & Subtitle -->
+      <!-- Left: Clean Brand Logo -->
       <div class="nav-brand">
         <div class="brand-logo">
-          <i class="fa-solid fa-bolt-lightning"></i>
+          <i class="fa-solid fa-bolt"></i>
         </div>
         <div class="brand-info">
-          <h1 class="brand-title">Skylark <span class="brand-accent">BI</span></h1>
-          <p class="brand-subtitle">Monday.com Business Intelligence Platform</p>
+          <h1 class="brand-title">Skylark <span class="brand-accent">AI</span></h1>
+          <p class="brand-subtitle">Business Intelligence Assistant</p>
         </div>
       </div>
 
-      <!-- Center: 3 Navigation Tabs -->
+      <!-- Center: 3 Clean Tabs -->
       <nav class="nav-tabs-center" role="tablist">
         <button class="nav-tab active" data-tab="tab-assistant" role="tab" id="tab-btn-assistant">
           <i class="fa-regular fa-comment-dots"></i>
-          <span>BI Assistant</span>
+          <span>Chat Assistant</span>
         </button>
         <button class="nav-tab" data-tab="tab-reports" role="tab" id="tab-btn-reports">
-          <i class="fa-solid fa-chart-simple"></i>
+          <i class="fa-solid fa-chart-line"></i>
           <span>Executive Reports</span>
         </button>
         <button class="nav-tab" data-tab="tab-board-data" role="tab" id="tab-btn-board-data">
           <i class="fa-solid fa-table-cells"></i>
-          <span>Board Data</span>
+          <span>Board Explorer</span>
         </button>
       </nav>
 
-      <!-- Right: Monday.com Integration Status & Sync -->
+      <!-- Right: Live Status & Refresh -->
       <div class="nav-right">
-        <div id="connection-status-badge" class="integration-pill" title="Monday.com API v2 Live Connection (120s TTL Cache)">
-          <i class="fa-solid fa-sliders-simple"></i>
-          <span id="sync-status-text">Monday.com Live (TTL: 120s)</span>
+        <div id="connection-status-badge" class="status-pill connected" title="Live Data Sync">
+          <span class="status-dot"></span>
+          <span id="sync-status-text">Connected</span>
         </div>
-        <button id="refresh-data-btn" class="sync-icon-btn" title="Sync live board data">
+        <button id="refresh-data-btn" class="sync-icon-btn" title="Refresh live data">
           <i class="fa-solid fa-arrows-rotate"></i>
         </button>
         <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Theme">
@@ -64,17 +64,17 @@
       </div>
     </header>
 
-    <!-- Top 4 Executive KPI Cards -->
+    <!-- Top 4 Clean KPI Cards -->
     <section class="kpi-grid">
       <!-- Card 1: Deals Pipeline -->
       <div class="kpi-card card-pipeline">
         <div class="kpi-header">
-          <span class="kpi-title">Deals Pipeline</span>
+          <span class="kpi-title">Sales Pipeline</span>
           <span class="kpi-badge badge-blue">Pipeline</span>
         </div>
         <div class="kpi-body">
           <h2 class="kpi-number" id="val-pipeline">₹340.29 Cr</h2>
-          <p class="kpi-subtext" id="sub-pipeline">346 active deals across sectors</p>
+          <p class="kpi-subtext" id="sub-pipeline">346 active opportunities</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@
         </div>
         <div class="kpi-body">
           <h2 class="kpi-number" id="val-pos">₹21.16 Cr</h2>
-          <p class="kpi-subtext" id="sub-pos">176 active executed projects</p>
+          <p class="kpi-subtext" id="sub-pos">176 committed projects</p>
         </div>
       </div>
 
@@ -94,91 +94,86 @@
       <div class="kpi-card card-billed">
         <div class="kpi-header">
           <span class="kpi-title">Billed Revenue</span>
-          <span class="kpi-badge badge-emerald">Billed</span>
+          <span class="kpi-badge badge-emerald">Realized</span>
         </div>
         <div class="kpi-body">
           <h2 class="kpi-number" id="val-billed">₹10.74 Cr</h2>
-          <p class="kpi-subtext" id="sub-billed">50.7% billing execution rate</p>
+          <p class="kpi-subtext" id="sub-billed">50.7% realization rate</p>
         </div>
       </div>
 
-      <!-- Card 4: Operational Risks -->
+      <!-- Card 4: Outstanding Collections -->
       <div class="kpi-card card-risks">
         <div class="kpi-header">
-          <span class="kpi-title">Operational Risks</span>
-          <span class="kpi-badge badge-amber">Attention Needed</span>
+          <span class="kpi-title">Pending Collections</span>
+          <span class="kpi-badge badge-amber">Action Needed</span>
         </div>
         <div class="kpi-body">
-          <h2 class="kpi-number" id="val-risks">25 Unbilled WOs</h2>
-          <p class="kpi-subtext" id="sub-risks">₹3.63 Cr Pending AR Collection</p>
+          <h2 class="kpi-number" id="val-risks">₹3.63 Cr AR</h2>
+          <p class="kpi-subtext" id="sub-risks">25 unbilled work orders</p>
         </div>
       </div>
     </section>
 
-    <!-- Quick Filter / Prompt Chips Row -->
+    <!-- Quick Prompt Suggestions Row -->
     <div class="quick-chips-row">
-      <button class="chip" data-query="How's our sales pipeline looking distributed by sector?">
+      <button class="chip" data-query="How is our sales pipeline looking distributed by sector?">
         <i class="fa-solid fa-chart-pie"></i> Pipeline by sector
       </button>
-      <button class="chip" data-query="What is our total billed revenue vs unbilled backlog across all sectors?">
-        <i class="fa-solid fa-file-invoice-dollar"></i> Revenue & billing status
+      <button class="chip" data-query="What is our total billed revenue vs unbilled backlog?">
+        <i class="fa-solid fa-file-invoice-dollar"></i> Revenue & billing
       </button>
-      <button class="chip" data-query="Which work orders are currently marked as STUCK or completed with zero billing?">
+      <button class="chip" data-query="Which work orders are currently marked as STUCK?">
         <i class="fa-solid fa-triangle-exclamation"></i> Stuck work orders
       </button>
       <button class="chip" data-query="How is BD owner performance distributed across owners?">
         <i class="fa-solid fa-user-group"></i> BD owner performance
       </button>
-      <button class="chip" data-query="What is our probability-weighted pipeline across closure stages?">
-        <i class="fa-solid fa-percent"></i> Probability-weighted pipeline
+      <button class="chip" data-query="prepare this week's leadership update">
+        <i class="fa-solid fa-file-waveform"></i> Leadership briefing
       </button>
     </div>
 
     <!-- Main Workspace Container (Tab Content Panes) -->
     <main class="main-content-workspace">
       
-      <!-- TAB 1: BI Assistant -->
+      <!-- TAB 1: Chat Assistant -->
       <section class="tab-pane active" id="tab-assistant">
         <div class="assistant-container">
           
-          <!-- Assistant Overview Hero Header -->
-          <div class="assistant-hero-header">
-            <h3 class="hero-title">Executive Business Intelligence Assistant</h3>
-            <p class="hero-desc">Query business performance across Work Orders and Deals boards in real time.<br>Data Resilience Engine normalizes missing values, date formats, and sector categories.</p>
-            
-            <!-- Data Resilience Audit Warning Box -->
-            <div class="data-resilience-box">
-              <div class="resilience-header">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <strong>Data Resilience Audit:</strong>
-              </div>
-              <p class="resilience-text" id="resilience-audit-text">
-                Data Resilience: 210 deals missing value fields imputed to ₹0 for safe aggregations. 25 work orders verified with unbilled status backlog.
-              </p>
-            </div>
-
-            <!-- Suggested Follow-up Queries -->
-            <div class="suggested-queries-block">
-              <span class="suggested-label">Suggested Follow-up Queries:</span>
-              <div class="suggested-pills-wrap">
-                <button class="suggested-pill chip" data-query="How is our pipeline looking for energy sector this quarter?">
-                  How is our pipeline looking for energy sector this quarter?
-                </button>
-                <button class="suggested-pill chip" data-query="What is our overall revenue and billing status?">
-                  What is our overall revenue and billing status?
-                </button>
-                <button class="suggested-pill chip" data-query="Which work orders are currently marked as STUCK?">
-                  Which work orders are currently marked as STUCK?
-                </button>
-                <button class="suggested-pill chip" data-query="How are BD owners performing?">
-                  How are BD owners performing?
-                </button>
+          <!-- Dynamic Chat Feed -->
+          <div class="chat-feed" id="chat-messages-container">
+            <!-- Welcome Initial Card -->
+            <div class="message-bubble-wrapper agent">
+              <div class="agent-response-card">
+                <div class="agent-card-header">
+                  <div class="agent-identity">
+                    <div class="agent-avatar"><i class="fa-solid fa-bolt"></i></div>
+                    <span class="agent-name">Skylark Assistant</span>
+                  </div>
+                  <span class="agent-tag">Live Data Active</span>
+                </div>
+                <div class="agent-markdown">
+                  <p>Hey there! 👋 I'm your AI business assistant. How can I help you today?</p>
+                  <p>You can ask questions about our <strong>sales pipeline</strong>, <strong>billed revenue</strong>, <strong>stuck projects</strong>, or generate a <strong>weekly executive briefing</strong>.</p>
+                </div>
+                <div class="suggested-pills-wrap" style="margin-top: 0.75rem;">
+                  <button class="suggested-pill chip" data-query="What is our total sales pipeline and weighted value?">
+                    📊 Total Sales Pipeline
+                  </button>
+                  <button class="chip suggested-pill" data-query="How's our pipeline looking for energy sector?">
+                    ⚡ Energy Sector Status
+                  </button>
+                  <button class="chip suggested-pill" data-query="Which work orders are currently marked as STUCK?">
+                    🚨 Stuck Work Orders
+                  </button>
+                  <button class="chip suggested-pill" data-query="prepare this week's leadership update">
+                    📋 Leadership Briefing
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-
-          <!-- Dynamic Chat Message Feed -->
-          <div class="chat-feed" id="chat-messages-container"></div>
 
           <!-- Query Input Area with Voice Dictation (STT) -->
           <div class="chat-input-wrapper">
@@ -187,14 +182,14 @@
                 type="text"
                 id="chat-input"
                 class="chat-input"
-                placeholder="Ask any executive query or click mic to speak (e.g. 'How is Mining pipeline looking?')..."
+                placeholder="Ask any question or click mic to speak..."
                 required
                 autocomplete="off"
               />
               <button type="button" id="mic-btn" class="mic-btn" title="Voice Input (Speech-to-Text)">
                 <i class="fa-solid fa-microphone"></i>
               </button>
-              <button type="submit" id="send-btn" class="send-btn" title="Send Query">
+              <button type="submit" id="send-btn" class="send-btn" title="Send Message">
                 <i class="fa-solid fa-paper-plane"></i>
                 <span>Send</span>
               </button>
@@ -210,17 +205,17 @@
           <div class="reports-header-bar">
             <div class="reports-title-wrap">
               <h3><i class="fa-solid fa-file-waveform accent-blue"></i> Weekly Executive Leadership Update</h3>
-              <p>Generated live from Monday.com Work Orders & Deals Boards with Data Resilience normalization</p>
+              <p>Comprehensive operational digest synthesized across sales and project execution</p>
             </div>
             <div class="reports-actions">
-              <button id="tts-report-btn" class="action-btn voice" title="Listen to Executive Briefing Aloud (TTS)">
+              <button id="tts-report-btn" class="action-btn voice" title="Listen to Executive Briefing Aloud">
                 <i class="fa-solid fa-volume-high"></i> Listen Aloud
               </button>
               <button id="generate-report-btn" class="action-btn primary">
-                <i class="fa-solid fa-rotate"></i> Regenerate Brief
+                <i class="fa-solid fa-rotate"></i> Regenerate
               </button>
               <button id="print-report-btn" class="action-btn secondary" onclick="window.print()">
-                <i class="fa-solid fa-print"></i> Print Brief
+                <i class="fa-solid fa-print"></i> Print
               </button>
             </div>
           </div>
@@ -232,29 +227,29 @@
         </div>
       </section>
 
-      <!-- TAB 3: Board Data Explorer -->
+      <!-- TAB 3: Board Explorer -->
       <section class="tab-pane" id="tab-board-data">
         <div class="board-data-container">
           <!-- Board Selector & Filter Controls -->
           <div class="board-controls-bar">
             <div class="board-selector-btns">
               <button class="board-toggle-btn active" data-board="deals" id="btn-show-deals">
-                <i class="fa-solid fa-filter-circle-dollar"></i> Deals Board (346 items)
+                <i class="fa-solid fa-filter-circle-dollar"></i> Deals Pipeline (346 records)
               </button>
               <button class="board-toggle-btn" data-board="work_orders" id="btn-show-wo">
-                <i class="fa-solid fa-list-check"></i> Work Orders Board (176 items)
+                <i class="fa-solid fa-list-check"></i> Work Orders (176 records)
               </button>
             </div>
             <div class="board-search-wrap">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="board-search-input" placeholder="Search records by client, deal name, or sector..." />
+              <input type="text" id="board-search-input" placeholder="Search by client, deal name, or sector..." />
             </div>
           </div>
 
           <!-- Data Grid View -->
           <div class="table-responsive-wrap" id="board-table-container">
             <div class="loading-state">
-              <i class="fa-solid fa-spinner fa-spin"></i> Loading live Monday.com records...
+              <i class="fa-solid fa-spinner fa-spin"></i> Loading live records...
             </div>
           </div>
         </div>

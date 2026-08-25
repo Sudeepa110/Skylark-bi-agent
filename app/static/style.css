@@ -1,20 +1,17 @@
 /* ==========================================================================
-   Skylark BI Platform - Executive UI/UX Design System
-   3-Tab Layout (BI Assistant | Executive Reports | Board Data)
-   With Live TTS (Text-to-Speech) and Voice Dictation
+   Skylark AI - Clean, User-Friendly Modern UI/UX Design System
    ========================================================================== */
 
 :root {
-  /* Dark Theme Palette */
-  --bg-app: #080c14;
-  --bg-surface: #0e1422;
-  --bg-surface-elevated: #151d30;
-  --bg-card: #101726;
-  --bg-card-hover: #172136;
+  --bg-app: #090d16;
+  --bg-surface: #0f1626;
+  --bg-surface-elevated: #162035;
+  --bg-card: #121b2d;
+  --bg-card-hover: #18243c;
   
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.16);
-  --border-card: #1c263c;
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-card: #1c2842;
   
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
@@ -22,16 +19,15 @@
   
   --accent-cyan: #00d2ff;
   --accent-blue: #0284c7;
-  --accent-blue-active: #0284c7;
   --accent-indigo: #6366f1;
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
   --accent-rose: #ef4444;
 
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-glow-cyan: 0 0 15px rgba(0, 210, 255, 0.2);
-  --shadow-glow-blue: 0 0 15px rgba(2, 132, 199, 0.25);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow-cyan: 0 0 16px rgba(0, 210, 255, 0.2);
+  --shadow-glow-blue: 0 0 16px rgba(2, 132, 199, 0.25);
   
   --radius-xs: 6px;
   --radius-sm: 8px;
@@ -44,19 +40,19 @@
 }
 
 body.light-theme {
-  --bg-app: #f1f5f9;
+  --bg-app: #f8fafc;
   --bg-surface: #ffffff;
-  --bg-surface-elevated: #e2e8f0;
+  --bg-surface-elevated: #f1f5f9;
   --bg-card: #ffffff;
   --bg-card-hover: #f8fafc;
   
-  --border-subtle: #cbd5e1;
-  --border-medium: #94a3b8;
+  --border-subtle: #e2e8f0;
+  --border-medium: #cbd5e1;
   --border-card: #e2e8f0;
   
   --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
 }
 
 * {
@@ -75,17 +71,17 @@ body {
 }
 
 .app-layout {
-  max-width: 1280px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.25rem;
   min-height: 100vh;
 }
 
 /* ==========================================================================
-   1. TOP NAVIGATION HEADER
+   1. TOP NAVIGATION
    ========================================================================== */
 
 .top-nav {
@@ -121,7 +117,7 @@ body {
 
 .brand-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.1;
@@ -133,7 +129,7 @@ body {
 }
 
 .brand-subtitle {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
@@ -141,7 +137,7 @@ body {
 .nav-tabs-center {
   display: flex;
   align-items: center;
-  background: #0b101c;
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   padding: 0.25rem;
@@ -152,10 +148,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.45rem 1.1rem;
+  padding: 0.45rem 1.15rem;
   border-radius: var(--radius-pill);
   font-family: var(--font-sans);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: transparent;
@@ -175,46 +171,32 @@ body {
   box-shadow: var(--shadow-glow-blue);
 }
 
-/* Right Status Pill & Voice & Sync */
+/* Right Status Pill & Actions */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
-/* Voice Toggle Button (TTS) */
-.voice-toggle-btn {
+.status-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.45rem 0.85rem;
+  padding: 0.4rem 0.85rem;
   border-radius: var(--radius-pill);
   font-size: 0.78rem;
   font-weight: 600;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.voice-toggle-btn.active {
-  background: rgba(16, 185, 129, 0.12);
-  border-color: rgba(16, 185, 129, 0.35);
   color: var(--accent-emerald);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
-.integration-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.85rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--accent-cyan);
-  background: rgba(0, 210, 255, 0.08);
-  border: 1px solid rgba(0, 210, 255, 0.25);
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
 }
 
 .sync-icon-btn, .theme-toggle-btn {
@@ -238,7 +220,7 @@ body {
 }
 
 /* ==========================================================================
-   2. TOP 4 EXECUTIVE KPI CARDS
+   2. TOP 4 CLEAN KPI CARDS
    ========================================================================== */
 
 .kpi-grid {
@@ -254,7 +236,7 @@ body {
   padding: 1.1rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
   position: relative;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -302,12 +284,12 @@ body {
 }
 
 .kpi-subtext {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
 /* ==========================================================================
-   3. QUICK ACTION CHIPS ROW
+   3. QUICK PROMPT CHIPS ROW
    ========================================================================== */
 
 .quick-chips-row {
@@ -326,14 +308,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.9rem;
+  padding: 0.45rem 0.95rem;
   border-radius: var(--radius-pill);
   font-family: var(--font-sans);
   font-size: 0.78rem;
   font-weight: 500;
   color: #7dd3fc;
-  background: rgba(2, 132, 199, 0.12);
-  border: 1px solid rgba(2, 132, 199, 0.28);
+  background: rgba(2, 132, 199, 0.1);
+  border: 1px solid rgba(2, 132, 199, 0.25);
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -366,101 +348,25 @@ body {
   display: flex;
 }
 
-/* TAB 1: Assistant Container */
+/* TAB 1: Chat Assistant Container */
 .assistant-container {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
-  border-left: 3px solid var(--accent-cyan);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   box-shadow: var(--shadow-sm);
-}
-
-.hero-title {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.35rem;
-}
-
-.hero-desc {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.45;
-  margin-bottom: 1rem;
-}
-
-/* Data Resilience Audit Box */
-.data-resilience-box {
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: var(--radius-sm);
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.1rem;
-}
-
-.resilience-header {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--accent-amber);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.resilience-text {
-  font-size: 0.78rem;
-  color: #cbd5e1;
-  line-height: 1.4;
-}
-
-/* Suggested Follow-up Queries */
-.suggested-queries-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.suggested-label {
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.suggested-pills-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.suggested-pill {
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  font-size: 0.76rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.suggested-pill:hover {
-  background: var(--accent-blue);
-  color: #ffffff;
-  border-color: transparent;
+  min-height: 480px;
 }
 
 /* Chat Feed */
 .chat-feed {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-height: 480px;
+  gap: 1.1rem;
+  max-height: 460px;
   overflow-y: auto;
   padding: 0.5rem 0;
   scrollbar-width: thin;
@@ -471,7 +377,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  max-width: 92%;
+  max-width: 90%;
   animation: fadeIn 0.2s ease forwards;
 }
 
@@ -492,7 +398,7 @@ body {
 .user-bubble {
   background: var(--accent-blue);
   color: #ffffff;
-  padding: 0.65rem 1rem;
+  padding: 0.7rem 1.1rem;
   border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md);
   font-size: 0.88rem;
 }
@@ -501,8 +407,8 @@ body {
   background: var(--bg-surface);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
-  padding: 1.2rem 1.35rem;
-  font-size: 0.86rem;
+  padding: 1.15rem 1.35rem;
+  font-size: 0.88rem;
   line-height: 1.6;
 }
 
@@ -514,6 +420,27 @@ body {
   margin-bottom: 0.75rem;
   border-bottom: 1px solid var(--border-subtle);
   font-size: 0.8rem;
+}
+
+.agent-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.agent-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+}
+
+.agent-name {
   font-weight: 600;
   color: var(--accent-cyan);
 }
@@ -544,24 +471,12 @@ body {
   color: #000000;
 }
 
-.listen-btn.speaking {
-  background: var(--accent-emerald);
-  color: #ffffff;
-  border-color: transparent;
-  animation: speakingPulse 1.2s infinite ease-in-out;
-}
-
-@keyframes speakingPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
 .agent-tag {
   font-size: 0.7rem;
   color: var(--accent-emerald);
 }
 
-/* Markdown Typography */
+/* Markdown Typography inside Assistant messages */
 .agent-markdown h1, .agent-markdown h2, .agent-markdown h3, .agent-markdown h4 {
   font-family: var(--font-display);
   color: var(--text-primary);
@@ -572,15 +487,15 @@ body {
 .agent-markdown h2 { font-size: 1.05rem; }
 .agent-markdown h3 { font-size: 0.95rem; }
 
-.agent-markdown p { margin-bottom: 0.6rem; }
-.agent-markdown ul, .agent-markdown ol { margin-left: 1.25rem; margin-bottom: 0.65rem; }
+.agent-markdown p { margin-bottom: 0.5rem; }
+.agent-markdown ul, .agent-markdown ol { margin-left: 1.25rem; margin-bottom: 0.55rem; }
 .agent-markdown li { margin-bottom: 0.25rem; }
 
 .agent-markdown table {
   width: 100%;
   border-collapse: collapse;
   margin: 0.75rem 0;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-xs);
   overflow: hidden;
@@ -591,12 +506,12 @@ body {
   color: var(--text-secondary);
   font-weight: 600;
   text-align: left;
-  padding: 0.5rem 0.75rem;
+  padding: 0.55rem 0.75rem;
   border-bottom: 1px solid var(--border-card);
 }
 
 .agent-markdown td {
-  padding: 0.45rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border-card);
 }
 
@@ -604,7 +519,30 @@ body {
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Input Wrapper & Voice Mic Button */
+.suggested-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.suggested-pill {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.suggested-pill:hover {
+  background: var(--accent-blue);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+/* Input Form */
 .chat-input-wrapper {
   margin-top: 0.5rem;
 }
@@ -654,19 +592,6 @@ body {
 .mic-btn:hover {
   color: var(--accent-cyan);
   border-color: var(--accent-cyan);
-}
-
-.mic-btn.listening {
-  background: var(--accent-rose);
-  color: #ffffff;
-  border-color: transparent;
-  animation: micPulse 1.2s infinite;
-}
-
-@keyframes micPulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
-  70% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
 .send-btn {
