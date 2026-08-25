@@ -78,10 +78,9 @@ Built for the **Skylark Drones Technical Assignment**, this agent provides full-
 - **Grounding & Zero Hallucinations**: Exact numbers (Pipeline, Billed, Backlog, AR) are computed deterministically via Pandas and fed into Gemini 3.6 Flash for strategic executive framing.
 - **Proactive Ambiguity Detection**: Flags underspecified questions and provides one-click selectable drill-down options.
 
-### 2. 🎙️ Live Text-to-Speech (TTS) Voice Narration & Voice Dictation
-- **Voice Mode (`🔊 Voice: ON/OFF`)**: Reads AI insights aloud in natural executive English.
-- **Inline Audio Player**: Click `🔊 Listen` on any message card or executive report for on-demand audio narration.
-- **Speech-to-Text (`🎙️ Mic`)**: Dictate questions directly into the input bar with live pulsation animation.
+### 2. 🎙️ Live Text-to-Speech (TTS) Audio Narration & Voice Dictation
+- **On-Demand Audio Narration**: Click `🔊 Listen` on any response card or executive report to hear insights narrated aloud in natural executive English.
+- **Speech-to-Text (`🎙️ Mic`)**: Dictate founder questions hands-free directly into the input bar with live recording pulsation.
 
 ### 3. 📊 3-Tab Executive Workspace
 - **Tab 1: `💬 BI Assistant`**: Main conversational AI workspace with glowing KPI ribbon, quick prompt chips, and Data Resilience Audit box.
